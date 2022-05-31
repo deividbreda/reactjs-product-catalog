@@ -1,51 +1,45 @@
+import { useEffect, useState } from "react";
+import { api } from "../../services/api";
 import { Coluna, ContainerWidth } from "../../styles/global-styles";
 import { Content } from "./styles";
 
+interface ProdutosProps {
+    id: number,
+    titulo: string,
+    valor: number,
+    link: string,
+}
+
 export function Home(){
+    const [produtos, setProdutos] = useState<ProdutosProps[]>([]);
+
+    useEffect(() => {
+        api.get('catalogs')
+        .then(response => setProdutos(response.data.catalogs));
+    }, [])
+
     return(
         <ContainerWidth>
             <Content>
                 <div className="divTitulo">
-                    <h2>NOSSOS</h2>
+                    <h2> <i> NOSSOS </i> </h2>
                     <h1>PRODUTOS</h1>
                 </div>
 
                 <Coluna>
-                    <div className="col col-4">
-                        <div className="itemColuna">
-                            <img src="https://images.lojanike.com.br/1024x1024/produto/tenis-nike-air-max-90-infantil-CD6864-019-5-51649775560.jpg" alt="" />
-                            <h5> Tênis Nike Air Max </h5>
-                            <h3> R$ 699,99 </h3>
-                            <button> Adicionar ao Carrinho</button>
+                    {produtos.map(produto => (
+                        <div key={produto.id} className="col col-4">
+                            <div className="itemColuna">
+                                <img src={produto.link} alt="" />
+                                <h5> {produto.titulo }</h5>
+                                <h3> { new Intl.NumberFormat('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(produto.valor)} </h3>
+                                <button> Adicionar ao Carrinho</button>
+                            </div>
                         </div>
-                    </div>
-
-                    <div className="col col-4">
-                        <div className="itemColuna">
-                            <img src="https://images.lojanike.com.br/1024x1024/produto/tenis-nike-air-max-90-infantil-CD6864-019-5-51649775560.jpg" alt="" />
-                            <h5> Tênis Nike Air Max </h5>
-                            <h3> R$ 699,99 </h3>
-                            <button> Adicionar ao Carrinho</button>
-                        </div>
-                    </div>
-
-                    <div className="col col-4">
-                        <div className="itemColuna">
-                            <img src="https://images.lojanike.com.br/1024x1024/produto/tenis-nike-air-max-90-infantil-CD6864-019-5-51649775560.jpg" alt="" />
-                            <h5> Tênis Nike Air Max </h5>
-                            <h3> R$ 699,99 </h3>
-                            <button> Adicionar ao Carrinho</button>
-                        </div>
-                    </div>
-
-                    <div className="col col-4">
-                        <div className="itemColuna">
-                            <img src="https://images.lojanike.com.br/1024x1024/produto/tenis-nike-air-max-90-infantil-CD6864-019-5-51649775560.jpg" alt="" />
-                            <h5> Tênis Nike Air Max </h5>
-                            <h3> R$ 699,99 </h3>
-                            <button> Adicionar ao Carrinho</button>
-                        </div>
-                    </div>
+                    ))}
                 </Coluna>
             </Content>
         </ContainerWidth>
