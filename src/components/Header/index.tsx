@@ -3,14 +3,18 @@ import { FaShoppingCart } from "react-icons/fa";
 import { Content } from "./styles";
 import logo from "../../images/logo.png"
 
-export function Header(){
+interface ModalCarrinhoProps {
+    abrirCarrinho: () => void;
+}
+
+export function Header({ abrirCarrinho }: ModalCarrinhoProps) {
     return(
         <Content>
             <ContainerWidth>
                 <Coluna>
                     <img src={logo} alt="" /> 
                     <input type="text" placeholder="Procurar um tênis..." />          
-                    <a> {<FaShoppingCart />} <span> 0 </span> </a>
+                    <a onClick={abrirCarrinho}> {<FaShoppingCart />} <span> 0 </span> </a>
                 </Coluna>                           
             </ContainerWidth>
         </Content>

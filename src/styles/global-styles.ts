@@ -53,6 +53,16 @@ export const GlobalStyles = createGlobalStyle`
         }
     }
 
+    @media (min-width: 728px) {
+        .col-2-picture {
+            width: 40%;
+        }
+
+        .col-2-text {
+            width: 60%;
+        }
+    }
+
     /* Três Colunas */
     @media (min-width: 728px) {
         .col-3 {
@@ -90,6 +100,45 @@ export const GlobalStyles = createGlobalStyle`
     @media (min-width: 728px) {
         .col-6 {
             width: 16.6666667%;
+        }
+    }
+
+    .reactModalOverlay {
+        background: rgba(0,0,0,0.5);
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .reactModalContent{
+        width: 100%;
+        max-width: 400px;
+        background: #fff;
+        height: 100%;
+        right: 0;
+        padding: 40px 35px;
+        position: absolute;
+        border-radius: 0px;
+        overflow: auto;
+    }
+
+    .reactModalClose {
+        position: absolute;
+        right: 26px;
+        top: 26px;
+        border: 0;
+        background: transparent;
+
+        transition: filter 0.2s;
+
+        &:hover {
+            filter: brightness(0.8);
         }
     }
 `;
