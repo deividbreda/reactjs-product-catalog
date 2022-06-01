@@ -31,6 +31,7 @@ export const Content = styled.div`
 
     .quantidade {
         display: flex;
+        align-items: center;
         gap: 8px;
         padding: 18px 0;
 
@@ -40,19 +41,31 @@ export const Content = styled.div`
             border: none;
             border-bottom: 2px solid #000;
             text-align: center;
-            padding-top: 2px;
+            padding: 3px;
         }
         
         button {
             background: #000;
             color: #fff;
-            padding: 2px 7px;
+            padding: 0px 5px;
             border-radius: 50%;
+        }
+
+        .trash {
+            background: none;
+            border: none;
+            color: red;
+            font-size: 20px;
+            line-height: 0px;
         }
     }
 
     .finalizarCompra {
         margin-top: 30px;
+
+        span {
+            color: #a1a1a1;
+        }
 
         h1 {
             font-size: 28px;

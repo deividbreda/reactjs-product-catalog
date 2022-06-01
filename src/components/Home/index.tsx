@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { useCart } from "../../hooks/useCart";
 import { api } from "../../services/api";
 import { Coluna, ContainerWidth } from "../../styles/global-styles";
 import { Content } from "./styles";
 
-interface ProdutosProps {
+export interface ProdutosProps {
     id: number,
     titulo: string,
     valor: number,
@@ -12,11 +13,16 @@ interface ProdutosProps {
 
 export function Home(){
     const [produtos, setProdutos] = useState<ProdutosProps[]>([]);
+    const { addCart } = useCart();
 
     useEffect(() => {
-        api.get('catalogs')
+        api.get('products/catalogs')
         .then(response => setProdutos(response.data.catalogs));
     }, [])
+
+    function handleAddCarrinho(id: number){
+        addCart(id)
+    }
 
     return(
         <ContainerWidth>
@@ -36,7 +42,7 @@ export function Home(){
                                         style: 'currency',
                                         currency: 'BRL'
                                     }).format(produto.valor)} </h3>
-                                <button> Adicionar ao Carrinho</button>
+                                <button onClick={() => handleAddCarrinho(produto.id)}> Adicionar ao Carrinho</button>
                             </div>
                         </div>
                     ))}
