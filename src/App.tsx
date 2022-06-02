@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
 import { Cart } from "./components/Cart";
 import { Header } from "./components/Header";
 import { Home } from "./components/Home";
@@ -21,6 +22,7 @@ export function App() {
       <Header abrirCarrinho={handleAbrirCarrinho}/>
       <Home />
       <Cart isOpen={modalCarrinho} onRequestClose={handleFecharCarrinho}/>
+      <ToastContainer autoClose={1000} />
       <GlobalStyles />
     </CartProvider>
   );

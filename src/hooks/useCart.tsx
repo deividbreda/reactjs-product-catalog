@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { ProdutosProps } from "../components/Home";
+import { toast } from 'react-toastify';
 import { api } from "../services/api";
 
 export interface Carrinho {
@@ -10,7 +10,10 @@ export interface Carrinho {
     amount: number
 }
 
-type CartInput = Omit<Carrinho, 'id'>
+interface AtualizaProdutoProps {
+    id: number,
+    amount: number,
+}
 
 interface CarrinhoProviderProps {
     children: ReactNode;
@@ -19,6 +22,8 @@ interface CarrinhoProviderProps {
 interface CarrinhoContextData {
     carrinho: Carrinho[],
     addCart: (id: number) => Promise<void>;
+    atualizaQtdProduto: ({id, amount}: AtualizaProdutoProps) => void;
+    deleteProduto: (id: number) => void;
 }
 
 const CarrinhoContext = createContext<CarrinhoContextData>({} as CarrinhoContextData);
@@ -52,18 +57,39 @@ export function CartProvider({ children }: CarrinhoProviderProps){
             
         } else {
             const response = await api.post('products/carts', {
-              ...produtoExists, amount: 1, amountProdutos: 1,
+              ...produtoExists, amount: 1,
             });
             const { cart } = response.data;
             atualizaCarrinho.push(cart);
         }
 
         setCarrinho(atualizaCarrinho);
-        console.log(carrinho)
+        toast.success('Produto adicionado ao carrinho!')
+    }
+
+    function deleteProduto(id: number){
+        const atualizaCarrinho = carrinho.filter(carrinho => carrinho.id !== id)
+        setCarrinho(atualizaCarrinho);
+    }
+
+    function atualizaQtdProduto({id, amount}: AtualizaProdutoProps){
+        if(amount <= 0) {
+            const atualizaCarrinho = carrinho.filter(carrinho => carrinho.id !== id)
+            setCarrinho(atualizaCarrinho);
+            return;
+        }
+
+        const atualizaCarrinho = [...carrinho];
+        const produtoExiste = atualizaCarrinho.find(carrinho => carrinho.id === id);
+
+        if(produtoExiste){
+            produtoExiste.amount = amount;
+            setCarrinho(atualizaCarrinho);
+        }
     }
 
     return(
-        <CarrinhoContext.Provider value = {{ carrinho, addCart }}>
+        <CarrinhoContext.Provider value = {{ carrinho, addCart, atualizaQtdProduto, deleteProduto }}>
             {children}
         </CarrinhoContext.Provider>
     );
